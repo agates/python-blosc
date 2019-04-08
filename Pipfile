@@ -1,0 +1,27 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[dev-packages]
+
+more-itertools = "*"
+numpy = "*"
+numpydoc = "*"
+mock = "*"
+psutil = "*"
+pytest = "*"
+tox = "*"
+
+
+[packages]
+
+blosc = {editable = true,path="."}
+cffi = "*"
+
+
+[requires]
+
+python_version = "3.5"

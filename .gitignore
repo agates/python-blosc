@@ -1,9 +1,9 @@
-blosc/blosc_extension.so
-blosc/version.py
+*.so
+src/blosc_cffi/version.py
 build/
 doc/_build/
 dist/
-blosc.egg-info/
+*.egg-info
 *~
 *.pyc
-
+.tox

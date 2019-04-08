@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# python-blosc documentation build configuration file, created by
+# python-blosc_cffi documentation build configuration file, created by
 # sphinx-quickstart on Sun May  5 19:38:24 2013.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -18,10 +18,10 @@ import sys, os
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
 
-# Let's do an absolute import of the installed blosc module so that we have a 
+# Let's do an absolute import of the installed blosc_cffi module so that we have a
 # link 
-import blosc
-blosc_location = os.path.dirname( blosc.__file__ )
+import blosc_cffi
+blosc_location = os.path.dirname(blosc_cffi.__file__)
 sys.path.insert(0, os.path.abspath(blosc_location))
 
 # -- General configuration -----------------------------------------------------
@@ -48,7 +48,7 @@ source_encoding = 'utf-8-sig'
 master_doc = 'index'
 
 # General information about the project.
-project = u'python-blosc'
+project = u'python-blosc_cffi'
 copyright = u'2010-2019 Francesc Alted, Valentin Haenel'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -191,7 +191,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'python-blosc.tex', u'python-blosc Documentation',
+  ('index', 'python-blosc_cffi.tex', u'python-blosc_cffi Documentation',
    u'Francesc Alted, Valentin Haenel', 'manual'),
 ]
 
@@ -221,7 +221,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'python-blosc', u'python-blosc Documentation',
+    ('index', 'python-blosc_cffi', u'python-blosc_cffi Documentation',
      [u'Francesc Alted, Valentin Haenel'], 1)
 ]
 
@@ -235,8 +235,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'python-blosc', u'python-blosc Documentation',
-   u'Francesc Alted, Valentin Haenel', 'python-blosc', 'Wrapper for c-blosc multi-threaded compressor.',
+  ('index', 'python-blosc_cffi', u'python-blosc_cffi Documentation',
+   u'Francesc Alted, Valentin Haenel', 'python-blosc_cffi', 'Wrapper for c-blosc_cffi multi-threaded compressor.',
    'Miscellaneous'),
 ]
 
@@ -255,7 +255,7 @@ intersphinx_mapping = {'http://docs.python.org/': None}
 
 
 # The use of mock prevents ImportErrors when Sphinx cannot find the built C-extension,
-# but we're better if we locate the installed blosc library instead which does 
+# but we're better if we locate the installed blosc_cffi library instead which does
 # have the the extension library.
 
 # # This is needed for the RTFD that cannot create extensions
@@ -268,5 +268,5 @@ intersphinx_mapping = {'http://docs.python.org/': None}
 #    def __getattr__(cls, name):
 #            return Mock()
 #
-#MOCK_MODULES = ['numpy', 'blosc', 'blosc_extension', 'blosc.blosc_extension']
+#MOCK_MODULES = ['numpy', 'blosc_cffi', 'blosc_extension', 'blosc_cffi.blosc_extension']
 #sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
