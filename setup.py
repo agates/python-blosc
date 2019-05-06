@@ -9,27 +9,41 @@
 
 # flake8: noqa
 
-import os
-
-from setuptools import Extension
+from pyclibrary import CParser
 from setuptools import setup
-from distutils.command.build_ext import build_ext
 from setuptools import find_packages
 
+
+# Blosc version
+VERSION = open('VERSION').read().strip()
 
 with open('README.rst') as f:
     long_description = f.read()
 
-# Blosc version
-VERSION = open('VERSION').read().strip()
+# TODO: Allow customizing this
+DEFAULT_INCLUDE = ("/usr/include/limits.h", "/usr/include/blosc.h")
 
 with open('src/blosc_cffi/version.py', 'w') as version_file:
     # Create the version.py file
     version_file.write('__version__ = "%s"\n' % VERSION)
 
-# Global variables
-CFLAGS = os.environ.get('CFLAGS', '').split()
-LFLAGS = os.environ.get('LFLAGS', '').split()
+parser = CParser(DEFAULT_INCLUDE)
+parser.process_all()
+header_values = parser.defs["values"]
+blosc_values = ((key, value)
+                for key, value in header_values.items()
+                if key.startswith("BLOSC") and value is not None)
+
+with open('src/blosc_cffi/blosc_constants.py', 'w') as f:
+    for key, value in blosc_values:
+        try:
+            out_value = int(value)
+        except ValueError:
+            try:
+                out_value = float(value)
+            except ValueError:
+                out_value = '"{}"'.format(value)
+        f.write("{} = {}\n".format(key, out_value))
 
 setup(name="blosc-cffi",
       version=VERSION,
@@ -58,22 +72,13 @@ setup(name="blosc-cffi",
       url='http://github.com/blosc/python-blosc-cffi',
       license='https://opensource.org/licenses/BSD-3-Clause',
       platforms=['any'],
-      ext_modules=[
-          Extension("blosc_cffi.blosc_extension",
-                    libraries=["blosc"],
-                    sources=["src/blosc_cffi/blosc_extension.c"],
-                    extra_link_args=LFLAGS,
-                    extra_compile_args=CFLAGS
-                    ),
-      ],
       install_requires=[
           'cffi',
       ],
-      tests_require=['numpy', 'psutil'],
+      tests_require=['numpy', 'psutil', 'pytest'],
       extras_require={
       },
       packages=find_packages(where='src'),
       package_dir={'': 'src'},
       zip_safe=False,
-      cmdclass={'build_ext': build_ext},
       )

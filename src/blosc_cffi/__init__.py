@@ -8,7 +8,7 @@
 import atexit
 
 # Blosc C symbols that we want to export
-from .blosc_extension import (
+from .blosc_constants import (
     BLOSC_VERSION_STRING as VERSION_STRING,
     BLOSC_VERSION_DATE as VERSION_DATE,
     BLOSC_MAX_BUFFERSIZE as MAX_BUFFERSIZE,
@@ -17,6 +17,10 @@ from .blosc_extension import (
     BLOSC_NOSHUFFLE as NOSHUFFLE,
     BLOSC_SHUFFLE as SHUFFLE,
     BLOSC_BITSHUFFLE as BITSHUFFLE,
+
+)
+
+from .c_blosc import (
     init,
     destroy,
 )

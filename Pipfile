@@ -12,13 +12,14 @@ numpy = "*"
 numpydoc = "*"
 mock = "*"
 psutil = "*"
+pyclibrary = "*"
 pytest = "*"
 tox = "*"
 
 
 [packages]
 
-blosc = {editable = true,path="."}
+blosc-cffi = {editable = true,path="."}
 cffi = "*"
 
 

@@ -11,16 +11,14 @@ import cffi
 import os
 import sys
 from distutils.version import LooseVersion
+
 try:
     import cPickle as pickle
 except ImportError:
     import pickle
 
 import blosc_cffi
-from blosc_cffi import blosc_extension as _ext
-
-int_ = (int,)
-
+from blosc_cffi import c_blosc as _ext
 
 ffi = cffi.FFI()
 
@@ -347,7 +345,7 @@ def _check_shuffle(shuffle):
         raise ValueError("shuffle can only be one of NOSHUFFLE, SHUFFLE"
                          " and BITSHUFFLE.")
     if (shuffle == blosc_cffi.BITSHUFFLE and
-        LooseVersion(blosc_cffi.blosclib_version) < LooseVersion("1.8.0")):
+            LooseVersion(blosc_cffi.blosclib_version) < LooseVersion("1.8.0")):
         raise ValueError("You need C-Blosc 1.8.0 or higher for using"
                          " BITSHUFFLE.")
 
@@ -383,8 +381,8 @@ def _check_input_length(input_name, input_len):
 
 
 def _check_address(address):
-    if not isinstance(address, int_):
-        raise TypeError("only int or long objects are supported as address")
+    if not isinstance(address, cffi.FFI.CData):
+        raise TypeError("only cffi.FFI.CData is supported as address.  See FFI.addressof")
 
 
 def compress(bytesobj, typesize=8, clevel=9, shuffle=blosc_cffi.SHUFFLE,
@@ -715,7 +713,7 @@ def pack_array(array, clevel=9, shuffle=blosc_cffi.SHUFFLE, cname='blosclz'):
         raise TypeError(
             "only NumPy ndarray objects supported as input")
     itemsize = array.itemsize
-    _check_input_length('array size', array.size*itemsize)
+    _check_input_length('array size', array.size * itemsize)
     _check_typesize(array.itemsize)
     _check_shuffle(shuffle)
     _check_clevel(clevel)
@@ -794,7 +792,7 @@ def load_tests(loader, tests, pattern):
 
 
 def print_versions():
-    """Print all the versions of software that python-blosc_cffi relies on."""
+    """Print all the versions of software that python-blosc-cffi relies on."""
     import platform
     print("-=" * 38)
     print("python-blosc_cffi version: %s" % blosc_cffi.__version__)
@@ -820,6 +818,7 @@ def print_versions():
 if __name__ == '__main__':
     # test myself
     import doctest
+
     print_versions()
     nfail, ntests = doctest.testmod()
     if nfail == 0:

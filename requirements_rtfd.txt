@@ -1,4 +1,0 @@
-setuptools
-setuptools_scm
-numpydoc
-mock

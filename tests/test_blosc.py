@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-import ctypes
 import os
 
+from cffi import FFI
 import gc
 import pytest
 
@@ -18,6 +18,9 @@ except ImportError:
     psutil = None
 
 
+ffi = FFI()
+
+
 def test_basic_codec():
     s = b'0123456789'
     c = blosc_cffi.compress(s, typesize=1)
@@ -32,6 +35,13 @@ def test_get_clib(cname, expected):
     c = blosc_cffi.compress(s, typesize=1, cname=cname)
     clib = blosc_cffi.get_clib(c)
     assert clib == expected
+
+
+@pytest.mark.parametrize(("cname",), ((cname,) for cname in blosc_cffi.compressor_list()))
+def test_code_to_name(cname):
+    code = blosc_cffi.name_to_code(cname)
+    name = blosc_cffi.code_to_name(code)
+    assert cname == name
 
 
 @pytest.mark.parametrize(("cname",), ((cname,) for cname in blosc_cffi.compressor_list()))
@@ -76,7 +86,8 @@ def test_compress_numpy():
     # assume the expected answer was compressed from bytes
     b = b'0123456789'
     expected = blosc_cffi.compress(b, typesize=1)
-    assert expected == blosc_cffi.compress(numpy.array([b]), typesize=1)
+    result = blosc_cffi.compress(numpy.array([b]), typesize=1)
+    assert expected == result
 
 
 def test_decompress_bytes():
@@ -219,9 +230,8 @@ def test_compress_ptr_exceptions():
     # aren't raised.
     typesize, items = 8, 8
     data = [float(i) for i in range(items)]
-    Array = ctypes.c_double * items
-    array = Array(*data)
-    address = ctypes.addressof(array)
+    array = ffi.new("double[]", data)
+    address = ffi.addressof(array)
 
     pytest.raises(ValueError, blosc_cffi.compress_ptr, address, items, typesize=-1)
     pytest.raises(ValueError, blosc_cffi.compress_ptr, address, items, typesize=blosc_cffi.MAX_TYPESIZE + 1)
@@ -245,13 +255,12 @@ def test_decompress_ptr_exceptions():
     # make sure we do have a valid address
     typesize, items = 8, 8
     data = [float(i) for i in range(items)]
-    Array = ctypes.c_double * items
-    in_array = Array(*data)
-    c = blosc_cffi.compress_ptr(ctypes.addressof(in_array), items, typesize)
-    out_array = ctypes.create_string_buffer(items * typesize)
+    in_array = ffi.new("double[]", data)
+    c = blosc_cffi.compress_ptr(ffi.addressof(in_array), items, typesize)
+    out_array = ffi.new("char []", items * typesize)
 
-    pytest.raises(TypeError, blosc_cffi.decompress_ptr, 1.0, ctypes.addressof(out_array))
-    pytest.raises(TypeError, blosc_cffi.decompress_ptr, ['abc'], ctypes.addressof(out_array))
+    pytest.raises(TypeError, blosc_cffi.decompress_ptr, 1.0, ffi.addressof(out_array))
+    pytest.raises(TypeError, blosc_cffi.decompress_ptr, ['abc'], ffi.addressof(out_array))
 
     pytest.raises(TypeError, blosc_cffi.decompress_ptr, c, 1.0)
     pytest.raises(TypeError, blosc_cffi.decompress_ptr, c, ['abc'])
@@ -291,9 +300,9 @@ def test_no_leaks():
     num_elements = 10000000
     typesize = 8
     data = [float(i) for i in range(num_elements)]  # ~76MB
-    Array = ctypes.c_double * num_elements
-    array = Array(*data)
-    address = ctypes.addressof(array)
+    array = ffi.new("double[]", data)
+    array_buffer = ffi.buffer(array)
+    address = ffi.addressof(array)
 
     def leaks(operation, repeats=3):
         gc.collect()
@@ -307,13 +316,13 @@ def test_no_leaks():
         return (used_mem_after - used_mem_before) >= num_elements * 8.01
 
     def compress():
-        blosc_cffi.compress(array, typesize, clevel=1)
+        blosc_cffi.compress(array_buffer, typesize, clevel=1)
 
     def compress_ptr():
         blosc_cffi.compress_ptr(address, num_elements, typesize, clevel=0)
 
     def decompress():
-        cx = blosc_cffi.compress(array, typesize, clevel=1)
+        cx = blosc_cffi.compress(array_buffer, typesize, clevel=1)
         blosc_cffi.decompress(cx)
 
     def decompress_ptr():
