@@ -213,7 +213,7 @@ def decompress(input_bytes, as_bytearray):
 
             output = ffi.buffer(output_ptr)
 
-    return bytearray(output) if as_bytearray else bytes(output)
+    return bytearray(output) if as_bytearray else output
 
 
 def decompress_ptr(input_ptr, output_ptr):
