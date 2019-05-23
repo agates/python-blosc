@@ -14,7 +14,9 @@ compression through different compressors in Blosc.
 import numpy as np
 from timeit import default_timer as timer
 import blosc_cffi
-import ctypes
+from cffi import FFI
+
+ffi = FFI()
 
 N = int(1e8)
 clevel = 5
@@ -30,11 +32,12 @@ arrays = ((np.arange(N, dtype=np.int64), "the arange linear distribution"),
 
 in_ = arrays[0][0]
 out_ = np.empty(in_.size, dtype=in_.dtype)
-t0 = timer()
-#out_ = np.copy(in_)
-out_ = ctypes.memmove(out_.__array_interface__['data'][0],
-                      in_.__array_interface__['data'][0], N*8)
-tcpy = timer() - t0
+with ffi.from_buffer(in_) as in_ptr:
+    with ffi.from_buffer(out_) as out_ptr:
+        t0 = timer()
+        #out_ = np.copy(in_)
+        out_ = ffi.memmove(out_ptr, in_ptr, N*8)
+        tcpy = timer() - t0
 print("  *** ctypes.memmove() *** Time for memcpy():\t%.3f s\t(%.2f GB/s)" % (
     tcpy, (N*8 / tcpy) / 2**30))
 
@@ -44,15 +47,17 @@ for (in_, label) in arrays:
     print("\n*** %s ***" % label)
     for cname in blosc_cffi.compressor_list():
         for filter in [blosc_cffi.NOSHUFFLE, blosc_cffi.SHUFFLE, blosc_cffi.BITSHUFFLE]:
-            t0 = timer()
-            c = blosc_cffi.compress_ptr(in_.__array_interface__['data'][0],
-                                        in_.size, in_.dtype.itemsize,
-                                        clevel=clevel, shuffle=filter, cname=cname)
-            tc = timer() - t0
+            with ffi.from_buffer(in_) as in_ptr:
+                t0 = timer()
+                c = blosc_cffi.compress_ptr(in_ptr,
+                                            in_.size, in_.dtype.itemsize,
+                                            clevel=clevel, shuffle=filter, cname=cname)
+                tc = timer() - t0
             out = np.empty(in_.size, dtype=in_.dtype)
-            t0 = timer()
-            blosc_cffi.decompress_ptr(c, out.__array_interface__['data'][0])
-            td = timer() - t0
+            with ffi.from_buffer(out) as out_ptr:
+                t0 = timer()
+                blosc_cffi.decompress_ptr(c, out_ptr)
+                td = timer() - t0
             assert((in_ == out).all())
             print("  *** %-8s, %-10s *** %6.3f s (%.2f GB/s) / %5.3f s (%.2f GB/s)" % (
                 cname, blosc_cffi.filters[filter], tc, ((N * 8 / tc) / 2 ** 30), td, ((N * 8 / td) / 2 ** 30)), end='')
