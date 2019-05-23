@@ -775,10 +775,14 @@ def unpack_array(packed_array, **kwargs):
     pickled_array = _ext.decompress(packed_array, False)
     # ... and unpickle
 
-    array = pickle.loads(pickled_array, **kwargs)
-    if all(isinstance(x, bytes) for x in array.tolist()):
-        import numpy
-        array = numpy.array([x.decode('utf-8') for x in array.tolist()])
+    if kwargs:
+        array = pickle.loads(pickled_array, **kwargs)
+        array_list = array.tolist()
+        if all(isinstance(x, bytes) for x in array_list):
+            import numpy
+            array = numpy.array(x.decode('utf-8') for x in array_list)
+    else:
+        array = pickle.loads(pickled_array)
 
     return array
 
