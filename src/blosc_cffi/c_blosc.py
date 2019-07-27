@@ -211,7 +211,7 @@ def decompress(input_bytes, as_bytearray):
         with ffi.new("char []", nbytes) as output_ptr:
             decompress_helper(input_bytes_ptr, nbytes, output_ptr)
 
-            output = ffi.buffer(output_ptr)
+            output = bytes(ffi.buffer(output_ptr))
 
     return bytearray(output) if as_bytearray else output
 
