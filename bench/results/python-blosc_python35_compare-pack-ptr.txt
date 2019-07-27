@@ -1,0 +1,37 @@
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+python-blosc version: 1.8.1
+Blosc version: 1.16.2 ($Date:: 2019-02-03 #$)
+Compressors available: ['blosclz', 'lz4', 'lz4hc', 'zlib', 'zstd']
+Compressor library versions:
+  BloscLZ: 1.1.0
+  LZ4: 1.8.3
+  Zlib: 1.2.8
+  Zstd: 1.3.8
+Python version: 3.5.7 (default, Mar 19 2019, 18:04:30) 
+[GCC 9.0.1 20190227 (Red Hat 9.0.1-0.8)]
+Platform: Linux-5.2.2-ck1-x86_64 (#1 SMP PREEMPT Tue Jul 23 21:07:17 CDT 2019)
+Linux dist: Fedora 30
+Processor: x86_64
+Byte-ordering: little
+Detected cores: 24
+Number of threads to use by default: 4
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+Creating a large NumPy array with 10**8 int64 elements:
+  [       0        1        2 ... 99999997 99999998 99999999]
+  Time for copying array with np.copy():     0.726 s
+
+Using *** blosclz *** compressor::
+  Time for pack_array/unpack_array:     2.230/1.184 s.	Compr ratio: 150.11
+  Time for compress_ptr/decompress_ptr: 0.659/0.385 s.	Compr ratio: 152.37
+Using *** lz4 *** compressor::
+  Time for pack_array/unpack_array:     2.193/1.293 s.	Compr ratio: 151.70
+  Time for compress_ptr/decompress_ptr: 0.596/0.422 s.	Compr ratio: 152.14
+Using *** lz4hc *** compressor::
+  Time for pack_array/unpack_array:     2.352/1.326 s.	Compr ratio: 151.79
+  Time for compress_ptr/decompress_ptr: 0.834/0.436 s.	Compr ratio: 152.14
+Using *** zlib *** compressor::
+  Time for pack_array/unpack_array:     3.916/1.973 s.	Compr ratio: 310.43
+  Time for compress_ptr/decompress_ptr: 2.341/1.091 s.	Compr ratio: 312.12
+Using *** zstd *** compressor::
+  Time for pack_array/unpack_array:     2.792/1.232 s.	Compr ratio: 458.03
+  Time for compress_ptr/decompress_ptr: 1.232/0.345 s.	Compr ratio: 463.69

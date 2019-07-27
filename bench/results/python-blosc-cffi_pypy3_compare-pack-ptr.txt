@@ -1,0 +1,41 @@
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+python-blosc_cffi version: 1.8.2.dev0
+Blosc version: 1.17.1.dev ($Date:: 2019-07-23 #$)
+Compressors available: ['blosclz', 'lz4', 'lz4hc', 'snappy', 'zlib', 'zstd']
+Compressor library versions:
+  BloscLZ: 2.0.0
+  LZ4: 1.9.1
+  Snappy: 1.1.1
+  Zlib: 1.2.8
+  Zstd: 1.4.1
+Python version: 3.6.1 (3594036cc520, May 30 2019, 09:46:13)
+[PyPy 7.1.1-beta0 with GCC 9.1.1 20190503 (Red Hat 9.1.1-1)]
+Platform: Linux-5.2.2-ck1-x86_64 (#1 SMP PREEMPT Tue Jul 23 21:07:17 CDT 2019)
+Linux dist: Fedora 30
+Processor: x86_64
+Byte-ordering: little
+Detected cores: 24
+Number of threads to use by default: 4
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+Creating a large NumPy array with 10**8 int64 elements:
+  [       0        1        2 ... 99999997 99999998 99999999]
+  Time for copying array with np.copy():     0.439 s
+
+Using *** blosclz *** compressor::
+  Time for pack_array/unpack_array:     6.898/13.957 s.	Compr ratio: 139.65
+  Time for compress_ptr/decompress_ptr: 0.787/0.616 s.	Compr ratio: 152.37
+Using *** lz4 *** compressor::
+  Time for pack_array/unpack_array:     7.552/13.832 s.	Compr ratio: 151.70
+  Time for compress_ptr/decompress_ptr: 0.666/1.027 s.	Compr ratio: 152.14
+Using *** lz4hc *** compressor::
+  Time for pack_array/unpack_array:     7.834/13.787 s.	Compr ratio: 151.79
+  Time for compress_ptr/decompress_ptr: 0.829/0.522 s.	Compr ratio: 152.14
+Using *** snappy *** compressor::
+  Time for pack_array/unpack_array:     7.506/13.992 s.	Compr ratio: 20.40
+  Time for compress_ptr/decompress_ptr: 0.712/0.882 s.	Compr ratio: 20.40
+Using *** zlib *** compressor::
+  Time for pack_array/unpack_array:     9.018/14.337 s.	Compr ratio: 310.43
+  Time for compress_ptr/decompress_ptr: 2.360/1.259 s.	Compr ratio: 312.12
+Using *** zstd *** compressor::
+  Time for pack_array/unpack_array:     8.020/13.855 s.	Compr ratio: 458.03
+  Time for compress_ptr/decompress_ptr: 1.389/0.568 s.	Compr ratio: 463.69

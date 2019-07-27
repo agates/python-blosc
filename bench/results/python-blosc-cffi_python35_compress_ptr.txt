@@ -1,0 +1,83 @@
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+python-blosc_cffi version: 1.8.2.dev0
+Blosc version: 1.17.1.dev ($Date:: 2019-07-23 #$)
+Compressors available: ['blosclz', 'lz4', 'lz4hc', 'snappy', 'zlib', 'zstd']
+Compressor library versions:
+  BloscLZ: 2.0.0
+  LZ4: 1.9.1
+  Snappy: 1.1.1
+  Zlib: 1.2.8
+  Zstd: 1.4.1
+Python version: 3.5.7 (default, Mar 19 2019, 18:04:30) 
+[GCC 9.0.1 20190227 (Red Hat 9.0.1-0.8)]
+Platform: Linux-5.2.2-ck1-x86_64 (#1 SMP PREEMPT Tue Jul 23 21:07:17 CDT 2019)
+Linux dist: Fedora 30
+Processor: x86_64
+Byte-ordering: little
+Detected cores: 24
+Number of threads to use by default: 4
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+Creating NumPy arrays with 10**8 int64/float64 elements:
+  *** ctypes.memmove() *** Time for memcpy():	0.854 s	(0.87 GB/s)
+
+Times for compressing/decompressing with clevel=5 and 24 threads
+
+*** the arange linear distribution ***
+  *** blosclz , noshuffle  ***  1.205 s (0.62 GB/s) / 0.744 s (1.00 GB/s)	Compr. ratio:   2.0x
+  *** blosclz , shuffle    ***  0.816 s (0.91 GB/s) / 0.386 s (1.93 GB/s)	Compr. ratio: 152.4x
+  *** blosclz , bitshuffle ***  4.881 s (0.15 GB/s) / 0.533 s (1.40 GB/s)	Compr. ratio:  86.9x
+  *** lz4     , noshuffle  ***  1.202 s (0.62 GB/s) / 0.531 s (1.40 GB/s)	Compr. ratio:   2.0x
+  *** lz4     , shuffle    ***  0.685 s (1.09 GB/s) / 0.430 s (1.73 GB/s)	Compr. ratio: 152.1x
+  *** lz4     , bitshuffle ***  4.837 s (0.15 GB/s) / 0.573 s (1.30 GB/s)	Compr. ratio:  39.4x
+  *** lz4hc   , noshuffle  ***  5.159 s (0.14 GB/s) / 0.524 s (1.42 GB/s)	Compr. ratio:   2.0x
+  *** lz4hc   , shuffle    ***  0.842 s (0.89 GB/s) / 0.416 s (1.79 GB/s)	Compr. ratio: 152.1x
+  *** lz4hc   , bitshuffle ***  5.322 s (0.14 GB/s) / 0.546 s (1.36 GB/s)	Compr. ratio: 228.9x
+  *** snappy  , noshuffle  ***  1.216 s (0.61 GB/s) / 0.542 s (1.38 GB/s)	Compr. ratio:   2.0x
+  *** snappy  , shuffle    ***  0.793 s (0.94 GB/s) / 0.524 s (1.42 GB/s)	Compr. ratio:  20.4x
+  *** snappy  , bitshuffle ***  4.888 s (0.15 GB/s) / 0.614 s (1.21 GB/s)	Compr. ratio:  19.1x
+  *** zlib    , noshuffle  ***  7.964 s (0.09 GB/s) / 0.945 s (0.79 GB/s)	Compr. ratio:   5.3x
+  *** zlib    , shuffle    ***  2.303 s (0.32 GB/s) / 1.137 s (0.66 GB/s)	Compr. ratio: 312.1x
+  *** zlib    , bitshuffle ***  6.377 s (0.12 GB/s) / 1.137 s (0.66 GB/s)	Compr. ratio: 359.5x
+  *** zstd    , noshuffle  *** 10.994 s (0.07 GB/s) / 0.776 s (0.96 GB/s)	Compr. ratio:   7.9x
+  *** zstd    , shuffle    ***  1.370 s (0.54 GB/s) / 0.363 s (2.05 GB/s)	Compr. ratio: 463.7x
+  *** zstd    , bitshuffle ***  3.862 s (0.19 GB/s) / 0.569 s (1.31 GB/s)	Compr. ratio: 992.2x
+
+*** the linspace linear distribution ***
+  *** blosclz , noshuffle  ***  2.270 s (0.33 GB/s) / 0.235 s (3.16 GB/s)	Compr. ratio:   1.0x
+  *** blosclz , shuffle    ***  1.063 s (0.70 GB/s) / 0.507 s (1.47 GB/s)	Compr. ratio:  10.0x
+  *** blosclz , bitshuffle ***  4.915 s (0.15 GB/s) / 0.555 s (1.34 GB/s)	Compr. ratio:  28.9x
+  *** lz4     , noshuffle  ***  1.519 s (0.49 GB/s) / 0.329 s (2.26 GB/s)	Compr. ratio:   1.0x
+  *** lz4     , shuffle    ***  0.813 s (0.92 GB/s) / 0.429 s (1.74 GB/s)	Compr. ratio:  18.7x
+  *** lz4     , bitshuffle ***  4.888 s (0.15 GB/s) / 0.561 s (1.33 GB/s)	Compr. ratio:  22.3x
+  *** lz4hc   , noshuffle  ***  8.733 s (0.09 GB/s) / 0.525 s (1.42 GB/s)	Compr. ratio:   1.1x
+  *** lz4hc   , shuffle    ***  1.992 s (0.37 GB/s) / 0.378 s (1.97 GB/s)	Compr. ratio:  37.3x
+  *** lz4hc   , bitshuffle ***  6.832 s (0.11 GB/s) / 0.543 s (1.37 GB/s)	Compr. ratio:  42.3x
+  *** snappy  , noshuffle  ***  1.186 s (0.63 GB/s) / 0.233 s (3.20 GB/s)	Compr. ratio:   1.0x
+  *** snappy  , shuffle    ***  0.922 s (0.81 GB/s) / 0.508 s (1.47 GB/s)	Compr. ratio:  13.2x
+  *** snappy  , bitshuffle ***  5.008 s (0.15 GB/s) / 0.601 s (1.24 GB/s)	Compr. ratio:  14.1x
+  *** zlib    , noshuffle  *** 11.947 s (0.06 GB/s) / 1.482 s (0.50 GB/s)	Compr. ratio:   1.6x
+  *** zlib    , shuffle    ***  3.009 s (0.25 GB/s) / 0.998 s (0.75 GB/s)	Compr. ratio:  38.3x
+  *** zlib    , bitshuffle ***  6.602 s (0.11 GB/s) / 1.005 s (0.74 GB/s)	Compr. ratio:  43.4x
+  *** zstd    , noshuffle  *** 17.460 s (0.04 GB/s) / 0.836 s (0.89 GB/s)	Compr. ratio:   1.9x
+  *** zstd    , shuffle    ***  2.596 s (0.29 GB/s) / 0.518 s (1.44 GB/s)	Compr. ratio:  34.2x
+  *** zstd    , bitshuffle ***  4.592 s (0.16 GB/s) / 0.626 s (1.19 GB/s)	Compr. ratio:  48.7x
+
+*** the random distribution ***
+  *** blosclz , noshuffle  ***  1.115 s (0.67 GB/s) / 0.576 s (1.29 GB/s)	Compr. ratio:   2.8x
+  *** blosclz , shuffle    ***  1.198 s (0.62 GB/s) / 0.487 s (1.53 GB/s)	Compr. ratio:   5.3x
+  *** blosclz , bitshuffle ***  5.187 s (0.14 GB/s) / 0.524 s (1.42 GB/s)	Compr. ratio:   3.9x
+  *** lz4     , noshuffle  ***  1.106 s (0.67 GB/s) / 0.352 s (2.12 GB/s)	Compr. ratio:   2.5x
+  *** lz4     , shuffle    ***  1.050 s (0.71 GB/s) / 0.499 s (1.49 GB/s)	Compr. ratio:   4.7x
+  *** lz4     , bitshuffle ***  4.983 s (0.15 GB/s) / 0.566 s (1.32 GB/s)	Compr. ratio:   6.3x
+  *** lz4hc   , noshuffle  ***  7.029 s (0.11 GB/s) / 0.297 s (2.51 GB/s)	Compr. ratio:   3.5x
+  *** lz4hc   , shuffle    ***  3.832 s (0.19 GB/s) / 0.475 s (1.57 GB/s)	Compr. ratio:   5.3x
+  *** lz4hc   , bitshuffle ***  6.065 s (0.12 GB/s) / 0.560 s (1.33 GB/s)	Compr. ratio:   6.3x
+  *** snappy  , noshuffle  ***  1.363 s (0.55 GB/s) / 0.438 s (1.70 GB/s)	Compr. ratio:   2.7x
+  *** snappy  , shuffle    ***  1.165 s (0.64 GB/s) / 0.584 s (1.28 GB/s)	Compr. ratio:   4.5x
+  *** snappy  , bitshuffle ***  5.017 s (0.15 GB/s) / 0.621 s (1.20 GB/s)	Compr. ratio:   5.1x
+  *** zlib    , noshuffle  *** 10.729 s (0.07 GB/s) / 0.979 s (0.76 GB/s)	Compr. ratio:   4.0x
+  *** zlib    , shuffle    ***  5.489 s (0.14 GB/s) / 1.168 s (0.64 GB/s)	Compr. ratio:   6.1x
+  *** zlib    , bitshuffle ***  7.374 s (0.10 GB/s) / 1.099 s (0.68 GB/s)	Compr. ratio:   6.3x
+  *** zstd    , noshuffle  *** 21.283 s (0.04 GB/s) / 0.933 s (0.80 GB/s)	Compr. ratio:   4.2x
+  *** zstd    , shuffle    ***  5.471 s (0.14 GB/s) / 0.442 s (1.69 GB/s)	Compr. ratio:   6.0x
+  *** zstd    , bitshuffle ***  4.260 s (0.17 GB/s) / 0.540 s (1.38 GB/s)	Compr. ratio:   6.4x
