@@ -6,7 +6,6 @@ name = "pypi"
 
 
 [dev-packages]
-
 more-itertools = "*"
 numpy = "*"
 numpydoc = "*"
@@ -18,8 +17,7 @@ tox = "*"
 
 
 [packages]
-
-blosc-cffi = {editable = true,path="."}
+blosc-cffi = {editable = true,path=".", extras=["pyclibrary"]}
 cffi = "*"
 
 
